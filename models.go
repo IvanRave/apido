@@ -82,13 +82,13 @@ type ScrRequirement map[string][]string
 type ApiSpec struct {
     Swagger     string              `json:"swagger"`
     Host        string              `json:"host"`
-    Info        ApiInfo             `json:"info"`
+    Info        ApiInfo            `json:"info"`
     BasePath    string              `json:"basePath"`
     Schemes     []string            `json:"schemes"`
     Consumes    []string            `json:"consumes"`
     Produces    []string            `json:"produces"`
     
-    Paths       ApiPaths             `json:"paths""`
+    Paths       ApiPaths           `json:"paths""`
     Definitions map[string]ApiDefinition    `json:"definitions,omitempty"`
     SecurityDefinitions map[string]SecurityScheme   `json:"securityDefinitions,omitempty"`
     // A declaration of which security schemes are applied for the API as a whole. 
