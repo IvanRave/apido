@@ -44,6 +44,9 @@ func calcInParam(f reflect.StructField) (*InParam, string) {
             prm.ArrItem = &InParam {
                 RefParam: prmKey[4:len(prmKey)], // remove arr_
             }
+        case reflect.Ptr:
+            //prm.SwagType = "object"
+            prm.RefParam = prmKey // name of object, like object (in json)
         default:
             fmt.Println("warning: no type")
             fmt.Println(f.Type.Kind())
