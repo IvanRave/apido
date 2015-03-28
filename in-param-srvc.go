@@ -14,6 +14,7 @@ func CheckReq(methodParams []InParam, reqParams map[string]string) (map[string]i
 
 		// Send req value to inparam
 		// IsMatchValue("superdatafromurl")
+		// If reqParams["some"]  doesnt exists - send empty string ""
 		outValue, validCond := mp.IsMatchValue(reqParams[mp.Name])
 		if validCond.IsValidated() == false {
 			//result = false
