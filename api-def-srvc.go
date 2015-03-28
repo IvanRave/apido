@@ -45,8 +45,26 @@ func calcInParam(f reflect.StructField) (*InParam, string) {
 			RefParam: prmKey[4:len(prmKey)], // remove arr_
 		}
 	case reflect.Ptr:
-		//prm.SwagType = "object"
-		prm.RefParam = prmKey // name of object, like object (in json)
+
+		// f.Type.Name() == "" empty for unnamed types
+		// Elem() returns a type's element type.
+		// It panics if the type's Kind is not Array, Chan, Map, Ptr, or Slice.
+
+		switch f.Type.Elem().Kind() {
+		case reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+			prm.SwagType = "integer"
+			prm.SwagFormat = f.Type.Elem().String()
+		case reflect.String:
+			prm.SwagType = "string"
+		case reflect.Bool:
+			prm.SwagType = "boolean"
+		default:
+			//fmt.Println(f.Type)
+
+			//prm.SwagType = "object"
+			prm.RefParam = prmKey // name of object, like object (in json
+		}
+
 	default:
 		fmt.Println("warning: no type")
 		fmt.Println(f.Type.Kind())
