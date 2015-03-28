@@ -75,45 +75,53 @@ func transformInteger(val int64, integerFormat int8) interface{} {
 // required: { our: true, yours: false }}
 // Rerun ourValue, converted to required SwagType
 // If val is not exists - empty string ""
-func (inp *InParam) IsMatchValue(val string) (interface{}, ValidCond) {
-
-	var outValue interface{}
-
-	// by default
-	outValue = val
+// You can not use outValue if ValidConditions is not empty
+func (inp *InParam) IsMatchValue(val string, isValExists bool) (interface{}, ValidCond) {
 
 	validCond := ValidCond{
 		UnMatched: map[string]string{},
 	}
 
-	if inp.Required {
-		if val == "" {
-			validCond.UnMatched["paramRequired"] = "true"
-			outValue = nil
+	if inp.Required == true && isValExists == false {
+		validCond.UnMatched["paramRequired"] = "true"
+		return nil, validCond
+	}
+
+	if inp.Required == false && isValExists == false {
+		return nil, validCond
+	}
+
+	if inp.SwagType == "string" {
+		// no conversion
+		return val, validCond
+	}
+
+	if inp.SwagType == "boolean" {
+		outBool, errOutBool := strconv.ParseBool(val)
+		if errOutBool != nil {
+			validCond.UnMatched["paramType"] = "boolean"
+			return nil, validCond
 		}
+
+		return outBool, validCond
 	}
 
 	// if number exists: check it and transform from string to integer
 	if inp.SwagType == "integer" {
-		// if no integer - return null value (without conditions)
-		if val == "" {
-			outValue = nil
+		// int8, 16, 32, 64 or nil
+		integerFormat := calcIntegerFormat(inp.SwagFormat)
+		//fmt.Printf("integerFormat: %v", integerFormat)
+		i, e := strconv.ParseInt(val, 10, int(integerFormat))
+		if e != nil {
+			validCond.UnMatched["paramType"] = "integer"
+			return nil, validCond
 		} else {
-			// int8, 16, 32, 64 or nil
-			integerFormat := calcIntegerFormat(inp.SwagFormat)
-			//fmt.Printf("integerFormat: %v", integerFormat)
-			i, e := strconv.ParseInt(val, 10, int(integerFormat))
-			if e != nil {
-				validCond.UnMatched["paramType"] = "integer"
-				outValue = nil
-			} else {
-				outValue = transformInteger(i, integerFormat)
-			}
+			transValue := transformInteger(i, integerFormat)
+			return transValue, validCond
 		}
 	}
 
-	//if inp.format == "int" {
-	// try to convert int
-	//}
-	return outValue, validCond
+	// if no cases: return unknownError
+	validCond.UnMatched["unknownType"] = ""
+	return nil, validCond
 }

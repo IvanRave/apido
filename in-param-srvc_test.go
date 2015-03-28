@@ -14,10 +14,26 @@ func ExampleCheckReq() {
 			SwagFormat:  "int16",
 			Required:    false,
 		},
+		InParam{
+			In:          "query",
+			Name:        "demobool",
+			Description: "Demo boolean",
+			SwagType:    "boolean",
+			Required:    false,
+		},
+		InParam{
+			In:          "query",
+			Name:        "demostring",
+			Description: "Demo string value",
+			SwagType:    "string",
+			Required:    false,
+		},
 	}
 
 	demoReqParams := map[string]string{
-	//		"demoparam": "1234",
+		"demoparam":  "1234",
+		"demobool":   "true",
+		"demostring": "",
 	}
 
 	result, conds := CheckReq(demoMethodParams, demoReqParams)
@@ -28,7 +44,7 @@ func ExampleCheckReq() {
 
 	//Output:
 	// map[]
-	// map[demoparam:<nil>]
+	// map[demoparam:1234 demobool:true demostring:]
 }
 
 //methodParams []InParam, reqParams map[string]string) (map[string]interface{}, map[string]ValidCond) {
