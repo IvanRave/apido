@@ -1,4 +1,4 @@
 # apido
 GoLang Swagger API docs generator
 
-Welcome back
+API docs generated in code
