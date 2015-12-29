@@ -97,3 +97,20 @@ type ApiSpec struct {
 	// "security": [{"petstore_auth": ["write:pets","read:pets"]}]
 	Security []ScrRequirement `json:"security,omitempty"`
 }
+
+func (tmpApiSpec *ApiSpec) AppendDef(myDefinition string,
+	myTitle string,
+	myObj interface{}){
+	
+	tmpApiSpec.Definitions[myDefinition] = ApiDefinition{
+		Title:      myTitle,
+		Properties: ToSwag(myObj),
+	}
+
+	// Definitions: map[string]apido.ApiDefinition{
+	// 	"demo_prop": apido.ApiDefinition{
+	// 		Title: "Some property",
+	// 		//Required: []string{"id", "name"},
+	// 		Properties: ToSwag(demoType{}),
+	// 	},
+}
