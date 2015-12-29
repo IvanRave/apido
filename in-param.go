@@ -34,7 +34,7 @@ type InParam struct {
 	Pattern          string `json:"pattern,omitempty"`
 }
 
-// return 8, 16, 32, 64
+// calcIntegerFormat returns 8, 16, 32, 64
 func calcIntegerFormat(swagFormat string) int8 {
 	// by default: 32
 	switch swagFormat {
@@ -51,6 +51,7 @@ func calcIntegerFormat(swagFormat string) int8 {
 	}
 }
 
+// transormInteger to required format
 func transformInteger(val int64, integerFormat int8) interface{} {
 	switch integerFormat {
 	case 8:

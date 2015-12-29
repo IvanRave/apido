@@ -74,7 +74,7 @@ func calcInParam(f reflect.StructField) (*InParam, string) {
 	return prm, prmKey
 }
 
-//
+// ToSwag converts params to swag format
 func ToSwag(val interface{}) map[string]*InParam {
 	// apd := Agglo{}
 
