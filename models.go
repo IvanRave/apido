@@ -114,3 +114,42 @@ func (tmpApiSpec *ApiSpec) AppendDef(myDefinition string,
 	// 		Properties: ToSwag(demoType{}),
 	// 	},
 }
+
+func (tmpApiSpec *ApiSpec) AppendPath(apiPath string,
+	reqType string, // GET, POST only
+	summary string,
+	description string,
+	apiTags []string,
+	consumes []string,
+	produces []string,
+	inParamArr []InParam,
+	respMap map[string]ApiResponse){
+
+	// register handler in API docs
+	tmpApiSpec.Paths[apiPath] = ApiVerbs{
+		reqType: ApiMethod{
+			Tags: apiTags,
+			Summary: summary,
+			Description: description,
+			// The id MUST be unique among all operations described in the API.
+			// Tools and libraries MAY use the operation id
+			//   to uniquely identify an operation.
+			// convert my-obj + get-by-ids = myObjGetByIds
+			//OperationId: operationId,
+			Consumes: consumes,
+			Produces: produces,
+			// []apido.InParam
+			Parameters: inParamArr,
+			Responses:  respMap,
+			//Deprecated: true,
+			// This tag already in global settings
+			// Redefine it, if neccessary
+			// Security: []mddt.ScrRequirement {
+			//     mddt.ScrRequirement{
+			//         "api_key": []string{},
+			//     },
+			// },
+		},
+	}
+
+}
