@@ -40,11 +40,13 @@ func ExampleCheckReq() {
 
 	fmt.Println(conds)
 
-	fmt.Println(result)
+	fmt.Println(result["demoparam"])
+	fmt.Println(result["demobool"])
 
 	//Output:
 	// map[]
-	// map[demoparam:1234 demobool:true demostring:]
+	// 1234
+	// true
 }
 
 //methodParams []InParam, reqParams map[string]string) (map[string]interface{}, map[string]ValidCond) {
